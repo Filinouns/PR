@@ -24,7 +24,7 @@ constraint forall (i in 0..n_ninos-1) ( (kids_satis[i + 1, kids_toy[i*2]] +
                                          min_sat );
                                         
 % Constraint cantidad de cada juguete
-constraint forall ()
+constraint forall(j in 1..n_toys-1) (sum(i in 0..(n_ninos*2) - 1) (bool2int(kids_toy[i] = j)) <= toy_amount[j]);
 
 
 solve satisfy;
