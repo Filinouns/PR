@@ -1,0 +1,5 @@
+% Data file
+altura = 10;
+disp = [3, 5, 3];
+no2consec = {verde};
+prim = rojo;
