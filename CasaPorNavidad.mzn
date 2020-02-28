@@ -1,7 +1,3 @@
-% NO ESTA PARA NADA TERMINADO
-
-
-
 % Adornando la casa por navidad
 
 % Numero de adornos que se quieren comprar
@@ -12,24 +8,29 @@ constraint assert (N < 31, "El numero de adornos debe ser menor que 31");
 % Presupuesto
 int: P;
 
+% Objetos
+enum Objetos;
+
 % Coste y superficie por objeto
-array [1..N, 1..2] of int: objects;
+array [Objetos, 1..2] of int: objects;
 
 % Array a completar con el coste y la superficie que ocupa un objeto seleccionado
-array [1..N, 1..2] of var 0..10000: superficie;
+%array [, 1..2] of var 0..10000: superficie;
+%array[1..card(Objetos), 1..2] of var opt Objetos: sel;
+var set of Objetos: sel;
 
-var int: S;
+% ---------------------Funciones-------------------------
+% Coste
+function var int: costetotal(var set of Objetos: s) = sum(o in s)(objects[o, 1]);
+function int: costetotal(set of Objetos: s) = sum(o in s)(objects[o, 1]);
+% Superficie
+function var int: superficietotal(var set of Objetos: s) = sum(o in s)(objects[o, 2]);
+function int: superficietotal(set of Objetos: s) = sum(o in s)(objects[o, 2]);
 
-%------------------------------------
-% Constraint para usar los objetos que se nos dan
-constraint sum(i in 1..N) (bool2int(objects[i, 1] = superficie[i, 1]) ) = 1;
-
-constraint sum(i in 1..N) (bool2int(objects[i, 2] = superficie[i, 2]) ) = 1;
-
-% Constraint superficie
-constraint S = sum(i in 1..N)(superficie[i, 2]);
-
+%--------------------Constraints---------------------------
 % Constraint para no pasarnos del presupuesto
-constraint P <= sum(i in 1..N)(superficie[i, 1]);
+constraint costetotal(sel) <= P;
 
-solve maximize S;
+solve maximize superficietotal(sel);
+
+output ["superficie: \(superficietotal(sel)); \n"]

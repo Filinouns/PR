@@ -10,17 +10,17 @@ enum Objetos;
 
 % Peso por objeto
 array[Objetos] of int: pesos;
-constraint assert (forall(i in Objetos) (pesos[i] > 0), "El peso de los objetos debe ser mayor que 0")
+constraint assert (forall(i in Objetos) (pesos[i] > 0), "El peso de los objetos debe ser mayor que 0");
 
 % Seleccion de objetos
 % El parametro "opt" hace que los valores de los objetos sea o null o encapsulacion del valor.
 array[1..card(Objetos)] of var opt Objetos: sel;
 
 % Funcion para sumar el valor de los pesos de una solucion
-function var int: suma(array[int] of opt Objetos: s) = sum (o in s where occurs(o)) (pesos[deopt(o)]);
+function var int: suma(array[int] of var opt Objetos: s) = sum (o in s where occurs(o)) (pesos[deopt(o)]);
 % "occurs" implica que tiene algo dentro
 % "deopt" es desencapsular el valor
-function int: suma(array[int] of opt Objetos: s) = sum(o in s where occurs(o))(pesos[deopt(o)]);
+function int: suma(array[int] of opt Objetos: s) = sum (o in s where occurs(o)) (pesos[deopt(o)]);
 
 % -------------------------------------------------------------
 % Constrains
